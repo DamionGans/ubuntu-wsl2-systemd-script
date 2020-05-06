@@ -1,18 +1,28 @@
-#!/bin/bash
+#!/bin/sh
 
-if [ "$UID" != 0 ]; then
+if [ "$LOGNAME" != "root" ]; then
     echo "You need to run $0 through sudo"
+    exit 1
+fi
+
+if [ -x /usr/sbin/daemonize ]; then
+    DAEMONIZE=/usr/sbin/daemonize
+elif [ -x /usr/bin/daemonize ]; then
+    DAEMONIZE=/usr/bin/daemonize
+else
+    echo "Cannot execute daemonize to start systemd."
     exit 1
 fi
 
 SYSTEMD_PID="$(ps -ef | grep '/lib/systemd/systemd --system-unit=basic.target$' | grep -v unshare | awk '{print $2}')"
 if [ -z "$SYSTEMD_PID" ]; then
-    /usr/sbin/daemonize /usr/bin/unshare --fork --pid --mount-proc /lib/systemd/systemd --system-unit=basic.target
+    "$DAEMONIZE" /usr/bin/unshare --fork --pid --mount-proc /lib/systemd/systemd --system-unit=basic.target
     while [ -z "$SYSTEMD_PID" ]; do
         SYSTEMD_PID="$(ps -ef | grep '/lib/systemd/systemd --system-unit=basic.target$' | grep -v unshare | awk '{print $2}')"
     done
 fi
 
+USER_HOME="$(getent passwd | awk '{ FS=":" } /'"$SUDO_USER"'/ {print $6}')"
 if [ -n "$SYSTEMD_PID" ] && [ "$SYSTEMD_PID" != "1" ]; then
     if [ -n "$1" ] && [ "$1" != "bash --login" ] && [ "$1" != "/bin/bash --login" ]; then
         exec /usr/bin/nsenter -t "$SYSTEMD_PID" -a \
@@ -21,7 +31,7 @@ if [ -n "$SYSTEMD_PID" ] && [ "$SYSTEMD_PID" != "1" ]; then
     else
         exec /usr/bin/nsenter -t "$SYSTEMD_PID" -a \
             /bin/login -p -f "$SUDO_USER" \
-            $(/bin/cat "$HOME/.systemd-env" | grep -v "^PATH=")
+            $(/bin/cat "$USER_HOME/.systemd-env" | xargs printf '%q')
     fi
     echo "Existential crisis"
 fi
