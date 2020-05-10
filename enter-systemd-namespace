@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash --norc
 
 if [ "$LOGNAME" != "root" ]; then
     echo "You need to run $0 through sudo"
