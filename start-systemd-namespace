@@ -1,40 +1,38 @@
-#!/bin/sh
+#!/bin/bash
 
-SYSTEMD_PID="$(ps -ef | grep '/lib/systemd/systemd --system-unit=basic.target$' | grep -v unshare | awk '{print $2}')"
-if [ "$LOGNAME" != "root" ] && ( [ -z "$SYSTEMD_PID" ] || [ "$SYSTEMD_PID" != "1" ] ); then
-    export | \
-        grep -E -v "^(declare -x )?BASH(=.*)?\$" | \
-        grep -E -v "^(declare -x )?BASH_ENV(=.*)?\$" | \
-        grep -E -v "^(declare -x )?DIRSTACK(=.*)?\$" | \
-        grep -E -v "^(declare -x )?EUID(=.*)?\$" | \
-        grep -E -v "^(declare -x )?GROUPS(=.*)?\$" | \
-        grep -E -v "^(declare -x )?HOME(=.*)?\$" | \
-        grep -E -v "^(declare -x )?HOSTNAME(=.*)?\$" | \
-        grep -E -v "^(declare -x )?HOSTTYPE(=.*)?\$" | \
-        grep -E -v "^(declare -x )?IFS='.*"$'\n'"'" | \
-        grep -E -v "^(declare -x )?LANG(=.*)?$=" | \
-        grep -E -v "^(declare -x )?LOGNAME(=.*)?\$" | \
-        grep -E -v "^(declare -x )?MACHTYPE(=.*)?\$" | \
-        grep -E -v "^(declare -x )?MAIL(=.*)?\$" | \
-        grep -E -v "^(declare -x )?NAME(=.*)?\$" | \
-        grep -E -v "^(declare -x )?OLDPWD(=.*)?\$" | \
-        grep -E -v "^(declare -x )?OPTERR(=.*)?\$" | \
-        grep -E -v "^(declare -x )?OPTIND(=.*)?\$" | \
-        grep -E -v "^(declare -x )?OSTYPE(=.*)?\$" | \
-        grep -E -v "^(declare -x )?PATH(=.*)?\$" | \
-        grep -E -v "^(declare -x )?PIPESTATUS(=.*)?\$" | \
-        grep -E -v "^(declare -x )?POSIXLY_CORRECT(=.*)?\$" | \
-        grep -E -v "^(declare -x )?PPID(=.*)?\$" | \
-        grep -E -v "^(declare -x )?PS1(=.*)?\$" | \
-        grep -E -v "^(declare -x )?PS4(=.*)?\$" | \
-        grep -E -v "^(declare -x )?SHELL(=.*)?\$" | \
-        grep -E -v "^(declare -x )?SHELLOPTS(=.*)?\$" | \
-        grep -E -v "^(declare -x )?SHLVL(=.*)?\$" | \
-        grep -E -v "^(declare -x )?SYSTEMD_PID(=.*)?\$" | \
-        grep -E -v "^(declare -x )?UID(=.*)?\$" | \
-        grep -E -v "^(declare -x )?USER(=.*)?\$" | \
-        grep -E -v "^(declare -x )?_(=.*)?\$" | sed -e 's|^declare -x ||g' > "$HOME/.systemd-env"
+SYSTEMD_PID=$(ps -ef | grep '/lib/systemd/systemd --system-unit=basic.target$' | grep -v unshare | awk '{print $2}')
+if [ -z "$SYSTEMD_PID" ] || [ "$SYSTEMD_PID" != "1" ]; then
     export PRE_NAMESPACE_PATH="$PATH"
+    (set -o posix; set) | \
+        grep -v "^BASH" | \
+        grep -v "^DIRSTACK=" | \
+        grep -v "^EUID=" | \
+        grep -v "^GROUPS=" | \
+        grep -v "^HOME=" | \
+        grep -v "^HOSTNAME=" | \
+        grep -v "^HOSTTYPE=" | \
+        grep -v "^IFS='.*"$'\n'"'" | \
+        grep -v "^LANG=" | \
+        grep -v "^LOGNAME=" | \
+        grep -v "^MACHTYPE=" | \
+        grep -v "^NAME=" | \
+        grep -v "^OPTERR=" | \
+        grep -v "^OPTIND=" | \
+        grep -v "^OSTYPE=" | \
+        grep -v "^PIPESTATUS=" | \
+        grep -v "^POSIXLY_CORRECT=" | \
+        grep -v "^PPID=" | \
+        grep -v "^PS1=" | \
+        grep -v "^PS4=" | \
+        grep -v "^SHELL=" | \
+        grep -v "^SHELLOPTS=" | \
+        grep -v "^SHLVL=" | \
+        grep -v "^SYSTEMD_PID=" | \
+        grep -v "^UID=" | \
+        grep -v "^USER=" | \
+        grep -v "^_=" | \
+        cat - > "$HOME/.systemd-env"
+    echo "PATH='$PATH'" >> "$HOME/.systemd-env"
     exec sudo /usr/sbin/enter-systemd-namespace "$BASH_EXECUTION_STRING"
 fi
 if [ -n "$PRE_NAMESPACE_PATH" ]; then
