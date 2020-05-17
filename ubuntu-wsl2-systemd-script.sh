@@ -20,6 +20,7 @@ Defaults        env_keep += WSLENV
 Defaults        env_keep += WSL_INTEROP
 Defaults        env_keep += WSL_DISTRO_NAME
 Defaults        env_keep += PRE_NAMESPACE_PATH
+Defaults        env_keep += PRE_NAMESPACE_PWD
 %sudo ALL=(ALL) NOPASSWD: /usr/sbin/enter-systemd-namespace
 EOF
 
