@@ -40,7 +40,9 @@ if [ "$LOGNAME" != "root" ] && ( [ -z "$SYSTEMD_PID" ] || [ "$SYSTEMD_PID" != "1
 fi
 if [ -n "$PRE_NAMESPACE_PATH" ]; then
     export PATH="$PRE_NAMESPACE_PATH"
+    unset PRE_NAMESPACE_PATH
 fi
 if [ -n "$PRE_NAMESPACE_PWD" ]; then
     cd "$PRE_NAMESPACE_PWD"
+    unset PRE_NAMESPACE_PWD
 fi
