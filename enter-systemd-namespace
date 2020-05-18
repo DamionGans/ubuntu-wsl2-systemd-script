@@ -14,11 +14,11 @@ else
     exit 1
 fi
 
-SYSTEMD_PID="$(ps -ef | grep '/lib/systemd/systemd --system-unit=basic.target$' | grep -v unshare | awk '{print $2}')"
+SYSTEMD_PID="$(ps -efw | grep '/lib/systemd/systemd --system-unit=basic.target$' | grep -v unshare | awk '{print $2}')"
 if [ -z "$SYSTEMD_PID" ]; then
     "$DAEMONIZE" /usr/bin/unshare --fork --pid --mount-proc /lib/systemd/systemd --system-unit=basic.target
     while [ -z "$SYSTEMD_PID" ]; do
-        SYSTEMD_PID="$(ps -ef | grep '/lib/systemd/systemd --system-unit=basic.target$' | grep -v unshare | awk '{print $2}')"
+        SYSTEMD_PID="$(ps -efw | grep '/lib/systemd/systemd --system-unit=basic.target$' | grep -v unshare | awk '{print $2}')"
     done
 fi
 
