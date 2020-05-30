@@ -22,7 +22,7 @@ if [ -z "$SYSTEMD_PID" ]; then
     done
 fi
 
-USER_HOME="$(getent passwd | awk '{ FS=":" } /'"^$SUDO_USER"'/ {print $6}')"
+USER_HOME="$(getent passwd | awk -F: '$1=="'"$SUDO_USER"'" {print $6}')"
 if [ -n "$SYSTEMD_PID" ] && [ "$SYSTEMD_PID" != "1" ]; then
     if [ -n "$1" ] && [ "$1" != "bash --login" ] && [ "$1" != "/bin/bash --login" ]; then
         exec /usr/bin/nsenter -t "$SYSTEMD_PID" -a \
