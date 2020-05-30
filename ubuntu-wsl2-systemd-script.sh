@@ -8,7 +8,10 @@ fi
 
 self_dir="$(dirname $0)"
 
-sudo apt-get update && sudo apt-get install -yqq daemonize dbus-user-session fontconfig
+sudo apt-get update && sudo apt-get install -yqq git daemonize dbus-user-session fontconfig
+
+git clone https://github.com/DamionGans/ubuntu-wsl2-systemd-script.git
+cd ubuntu-wsl2-systemd-script
 
 sudo cp "$self_dir/start-systemd-namespace" /usr/sbin/start-systemd-namespace
 sudo cp "$self_dir/enter-systemd-namespace" /usr/sbin/enter-systemd-namespace

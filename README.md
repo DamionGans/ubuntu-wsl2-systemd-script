@@ -8,9 +8,7 @@ Instructions from [the snapcraft forum](https://forum.snapcraft.io/t/running-sna
 ## Usage
 ### Run the script and commands
 ```sh
-git clone https://github.com/DamionGans/ubuntu-wsl2-systemd-script.git
-cd ubuntu-wsl2-systemd-script/
-bash ubuntu-wsl2-systemd-script.sh
+curl "https://raw.githubusercontent.com/DamionGans/ubuntu-wsl2-systemd-script/master/ubuntu-wsl2-systemd-script.sh" | bash
 # Enter your password and wait until the script has finished
 ```
 ### Then restart the Ubuntu shell and try running systemctl
