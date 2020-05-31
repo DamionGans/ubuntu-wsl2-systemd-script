@@ -2,38 +2,11 @@
 
 SYSTEMD_PID="$(ps -efw | grep '/lib/systemd/systemd --system-unit=basic.target$' | grep -v unshare | awk '{print $2}')"
 if [ "$LOGNAME" != "root" ] && ( [ -z "$SYSTEMD_PID" ] || [ "$SYSTEMD_PID" != "1" ] ); then
-    export | \
-        grep -E -v "^(declare -x )?BASH(=.*)?\$" | \
-        grep -E -v "^(declare -x )?BASH_ENV(=.*)?\$" | \
-        grep -E -v "^(declare -x )?DIRSTACK(=.*)?\$" | \
-        grep -E -v "^(declare -x )?EUID(=.*)?\$" | \
-        grep -E -v "^(declare -x )?GROUPS(=.*)?\$" | \
-        grep -E -v "^(declare -x )?HOME(=.*)?\$" | \
-        grep -E -v "^(declare -x )?HOSTNAME(=.*)?\$" | \
-        grep -E -v "^(declare -x )?HOSTTYPE(=.*)?\$" | \
-        grep -E -v "^(declare -x )?IFS='.*"$'\n'"'" | \
-        grep -E -v "^(declare -x )?LANG(=.*)?$=" | \
-        grep -E -v "^(declare -x )?LOGNAME(=.*)?\$" | \
-        grep -E -v "^(declare -x )?MACHTYPE(=.*)?\$" | \
-        grep -E -v "^(declare -x )?MAIL(=.*)?\$" | \
-        grep -E -v "^(declare -x )?NAME(=.*)?\$" | \
-        grep -E -v "^(declare -x )?OLDPWD(=.*)?\$" | \
-        grep -E -v "^(declare -x )?OPTERR(=.*)?\$" | \
-        grep -E -v "^(declare -x )?OPTIND(=.*)?\$" | \
-        grep -E -v "^(declare -x )?OSTYPE(=.*)?\$" | \
-        grep -E -v "^(declare -x )?PATH(=.*)?\$" | \
-        grep -E -v "^(declare -x )?PIPESTATUS(=.*)?\$" | \
-        grep -E -v "^(declare -x )?POSIXLY_CORRECT(=.*)?\$" | \
-        grep -E -v "^(declare -x )?PPID(=.*)?\$" | \
-        grep -E -v "^(declare -x )?PS1(=.*)?\$" | \
-        grep -E -v "^(declare -x )?PS4(=.*)?\$" | \
-        grep -E -v "^(declare -x )?SHELL(=.*)?\$" | \
-        grep -E -v "^(declare -x )?SHELLOPTS(=.*)?\$" | \
-        grep -E -v "^(declare -x )?SHLVL(=.*)?\$" | \
-        grep -E -v "^(declare -x )?SYSTEMD_PID(=.*)?\$" | \
-        grep -E -v "^(declare -x )?UID(=.*)?\$" | \
-        grep -E -v "^(declare -x )?USER(=.*)?\$" | \
-        grep -E -v "^(declare -x )?_(=.*)?\$" | sed -e 's|^declare -x ||g' > "$HOME/.systemd-env"
+    export | sed -e 's/^declare -x //;/^IFS=".*[^"]$/{N;s/\n//}' | \
+        grep -E -v "^(BASH|BASH_ENV|DIRSTACK|EUID|GROUPS|HOME|HOSTNAME|\
+IFS|LANG|LOGNAME|MACHTYPE|MAIL|NAME|OLDPWD|OPTERR|\
+OSTYPE|PATH|PIPESTATUS|POSIXLY_CORRECT|PPID|PS1|PS4|\
+SHELL|SHELLOPTS|SHLVL|SYSTEMD_PID|UID|USER|_)(=|\$)" > "$HOME/.systemd-env"
     export PRE_NAMESPACE_PATH="$PATH"
     export PRE_NAMESPACE_PWD="$(pwd)"
     exec sudo /usr/sbin/enter-systemd-namespace "$BASH_EXECUTION_STRING"
