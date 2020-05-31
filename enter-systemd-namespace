@@ -31,7 +31,7 @@ if [ -n "$SYSTEMD_PID" ] && [ "$SYSTEMD_PID" != "1" ]; then
     else
         exec /usr/bin/nsenter -t "$SYSTEMD_PID" -a \
             /bin/login -p -f "$SUDO_USER" \
-            $(/bin/cat "$USER_HOME/.systemd-env" | xargs printf '%q')
+            $(/bin/cat "$USER_HOME/.systemd-env" | xargs printf ' %q')
     fi
     echo "Existential crisis"
 fi
