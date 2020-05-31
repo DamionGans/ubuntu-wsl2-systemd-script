@@ -15,12 +15,12 @@ else
 fi
 
 SYSTEMD_EXE="/lib/systemd/systemd --system-unit=basic.target"
-SYSTEMD_PID="$(ps -efw | grep "$SYSTEMD_EXE"'$' | grep -v unshare | awk '{print $2}')"
+SYSTEMD_PID="$(ps -eo pid=,args= | awk '$2" "$3=="'"$SYSTEMD_EXE"'" {print $1}')"
 if [ -z "$SYSTEMD_PID" ]; then
     "$DAEMONIZE" /usr/bin/unshare --fork --pid --mount-proc bash -c 'export container=wsl; mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc; exec '"$SYSTEMD_EXE"
     echo "Sleeping for 2 seconds to let systemd settle"
     sleep 2
-    SYSTEMD_PID="$(ps -efw | grep "$SYSTEMD_EXE"'$' | grep -v unshare | awk '{print $2}')"
+    SYSTEMD_PID="$(ps -eo pid=,args= | awk '$2" "$3=="'"$SYSTEMD_EXE"'" {print $1}')"
 fi
 
 USER_HOME="$(getent passwd | awk -F: '$1=="'"$SUDO_USER"'" {print $6}')"
