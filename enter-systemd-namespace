@@ -14,6 +14,16 @@ else
     exit 1
 fi
 
+if ! command -v /lib/systemd/systemd > /dev/null; then
+    echo "Cannot execute /lib/systemd/systemd."
+    exit 1
+fi
+
+if ! command -v /usr/bin/unshare > /dev/null; then
+    echo "Cannot execute /usr/bin/unshare."
+    exit 1
+fi
+
 SYSTEMD_EXE="/lib/systemd/systemd --system-unit=basic.target"
 SYSTEMD_PID="$(ps -eo pid=,args= | awk '$2" "$3=="'"$SYSTEMD_EXE"'" {print $1}')"
 if [ -z "$SYSTEMD_PID" ]; then
