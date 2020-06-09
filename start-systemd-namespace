@@ -1,6 +1,7 @@
 #!/bin/sh
 
-SYSTEMD_PID="$(ps -efw | grep '/lib/systemd/systemd --system-unit=basic.target$' | grep -v unshare | awk '{print $2}')"
+SYSTEMD_EXE="/lib/systemd/systemd --system-unit=basic.target"
+SYSTEMD_PID="$(ps -eo pid=,args= | awk '$2" "$3=="'"$SYSTEMD_EXE"'" {print $1}')"
 if [ "$LOGNAME" != "root" ] && ( [ -z "$SYSTEMD_PID" ] || [ "$SYSTEMD_PID" != "1" ] ); then
     export | sed -e 's/^declare -x //;/^IFS=".*[^"]$/{N;s/\n//}' | \
         grep -E -v "^(BASH|BASH_ENV|DIRSTACK|EUID|GROUPS|HOME|HOSTNAME|\
