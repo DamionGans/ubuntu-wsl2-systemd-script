@@ -14,12 +14,13 @@ else
     exit 1
 fi
 
-SYSTEMD_PID="$(ps -efw | grep '/lib/systemd/systemd --system-unit=basic.target$' | grep -v unshare | awk '{print $2}')"
+SYSTEMD_EXE="/lib/systemd/systemd --system-unit=basic.target"
+SYSTEMD_PID="$(ps -efw | grep "$SYSTEMD_EXE"'$' | grep -v unshare | awk '{print $2}')"
 if [ -z "$SYSTEMD_PID" ]; then
-    "$DAEMONIZE" /usr/bin/unshare --fork --pid --mount-proc /lib/systemd/systemd --system-unit=basic.target
-    while [ -z "$SYSTEMD_PID" ]; do
-        SYSTEMD_PID="$(ps -efw | grep '/lib/systemd/systemd --system-unit=basic.target$' | grep -v unshare | awk '{print $2}')"
-    done
+    "$DAEMONIZE" /usr/bin/unshare --fork --pid --mount-proc bash -c 'export container=wsl; mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc; exec '"$SYSTEMD_EXE"
+    echo "Sleeping for 2 seconds to let systemd settle"
+    sleep 2
+    SYSTEMD_PID="$(ps -efw | grep "$SYSTEMD_EXE"'$' | grep -v unshare | awk '{print $2}')"
 fi
 
 USER_HOME="$(getent passwd | awk -F: '$1=="'"$SUDO_USER"'" {print $6}')"
@@ -27,11 +28,12 @@ if [ -n "$SYSTEMD_PID" ] && [ "$SYSTEMD_PID" != "1" ]; then
     if [ -n "$1" ] && [ "$1" != "bash --login" ] && [ "$1" != "/bin/bash --login" ]; then
         exec /usr/bin/nsenter -t "$SYSTEMD_PID" -a \
             /usr/bin/sudo -H -u "$SUDO_USER" \
-            /bin/bash -c 'set -a; source "$HOME/.systemd-env"; set +a; exec bash -c '"$(printf "%q" "$@")"
+            /bin/bash -c 'set -a; [ -f "$HOME/.systemd-env" ] && source "$HOME/.systemd-env"; set +a; exec bash -c '"$(printf "%q" "$@")"
     else
         exec /usr/bin/nsenter -t "$SYSTEMD_PID" -a \
             /bin/login -p -f "$SUDO_USER" \
-            $(/bin/cat "$USER_HOME/.systemd-env" | xargs printf ' %q')
+            $([ -f "$USER_HOME/.systemd-env" ] && /bin/cat "$USER_HOME/.systemd-env" | xargs printf ' %q')
     fi
     echo "Existential crisis"
+    exit 1
 fi
