@@ -8,6 +8,7 @@ fi
 
 self_dir="$(dirname $0)"
 
+sudo hwclock -s
 sudo apt-get update && sudo apt-get install -yqq daemonize dbus-user-session fontconfig
 
 sudo cp "$self_dir/start-systemd-namespace" /usr/sbin/start-systemd-namespace
