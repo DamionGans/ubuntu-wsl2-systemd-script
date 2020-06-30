@@ -29,11 +29,11 @@ if ! grep 'start-systemd-namespace' /etc/bash.bashrc >/dev/null; then
   sudo sed -i 2a"# Start or enter a PID namespace in WSL2\nsource /usr/sbin/start-systemd-namespace\n" /etc/bash.bashrc
 fi
 
-sudo rm /etc/systemd/user/sockets.target.wants/dirmngr.socket
-sudo rm /etc/systemd/user/sockets.target.wants/gpg-agent*.socket
-sudo rm /lib/systemd/system/sysinit.target.wants/proc-sys-fs-binfmt_misc.automount
-sudo rm /lib/systemd/system/sysinit.target.wants/proc-sys-fs-binfmt_misc.mount
-sudo rm /lib/systemd/system/sysinit.target.wants/systemd-binfmt.service
+sudo rm -f /etc/systemd/user/sockets.target.wants/dirmngr.socket
+sudo rm -f /etc/systemd/user/sockets.target.wants/gpg-agent*.socket
+sudo rm -f /lib/systemd/system/sysinit.target.wants/proc-sys-fs-binfmt_misc.automount
+sudo rm -f /lib/systemd/system/sysinit.target.wants/proc-sys-fs-binfmt_misc.mount
+sudo rm -f /lib/systemd/system/sysinit.target.wants/systemd-binfmt.service
 
 if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ] && [ "$(head -n1  /proc/sys/fs/binfmt_misc/WSLInterop)" == "enabled" ]; then
   cmd.exe /C setx WSLENV BASH_ENV/u
