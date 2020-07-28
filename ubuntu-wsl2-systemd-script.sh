@@ -47,7 +47,12 @@ function sysdrive_prefix {
 sudo hwclock -s
 sudo apt-get update && sudo apt-get install -yqq daemonize dbus-user-session fontconfig
 
+
+if cat /etc/shells | grep fish >/dev/null; then
+sudo cp "$self_dir/start-systemd-namespace.fish" /etc/fish/conf.d/start-systemd-namespace.fish
+fi
 sudo cp "$self_dir/start-systemd-namespace" /usr/sbin/start-systemd-namespace
+
 sudo cp "$self_dir/enter-systemd-namespace" /usr/sbin/enter-systemd-namespace
 sudo chmod +x /usr/sbin/enter-systemd-namespace
 
@@ -64,6 +69,10 @@ EOF
 if ! grep 'start-systemd-namespace' /etc/bash.bashrc >/dev/null; then
   sudo sed -i 2a"# Start or enter a PID namespace in WSL2\nsource /usr/sbin/start-systemd-namespace\n" /etc/bash.bashrc
 fi
+if grep 'zsh' /etc/shells >/dev/null && ! grep 'start-systemd-namespace' /etc/zsh/zshrc >/dev/null; then
+  sudo sed -i 2a"# Start or enter a PID namespace in WSL2\nsource /usr/sbin/start-systemd-namespace\n" /etc/zsh/zshrc
+fi
+
 
 sudo rm -f /etc/systemd/user/sockets.target.wants/dirmngr.socket
 sudo rm -f /etc/systemd/user/sockets.target.wants/gpg-agent*.socket

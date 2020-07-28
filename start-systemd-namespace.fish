@@ -10,7 +10,7 @@ OSTYPE|PATH|PIPESTATUS|POSIXLY_CORRECT|PPID|PS1|PS4|\
 SHELL|SHELLOPTS|SHLVL|SYSTEMD_PID|UID|USER|_)(=|\$)" > "$HOME/.systemd-env"
     set -x PRE_NAMESPACE_PATH $PATH
     set -x PRE_NAMESPACE_PWD (pwd)
-    exec sudo /etc/fish/conf.d/enter-systemd-namespace $BASH_EXECUTION_STRING
+    exec sudo /usr/sbin/enter-systemd-namespace $BASH_EXECUTION_STRING
 end
 if test -n "$PRE_NAMESPACE_PATH";
     set -x PATH $PRE_NAMESPACE_PATH
