@@ -1,15 +1,21 @@
 #!/bin/bash
 
-if [ -f /usr/sbin/start-systemd-namespace ] && [ "$1" != "--force" ]; then
-  echo "It appears you have already installed the systemd hack."
-  echo "To forcibly reinstall, run this script with the \`--force\` parameter."
-  exit
+if [ "$1" != "--force" ]; then
+    if [ -f /usr/sbin/start-systemd-namespace ]; then
+        echo "It appears you have already installed the systemd hack."
+        echo "To forcibly reinstall, run this script with the \`--force\` parameter."
+        exit
+    fi
+    if [ -z "$WSL_DISTRO_NAME" ]; then
+        echo "It appears that you are not running on WSL."
+        echo "To forcibly install anyway, run this script with the \`--force\` parameter."
+        exit
+    fi
 fi
 
 self_dir="$(dirname $0)"
 
 function interop_prefix {
-
 	win_location="/mnt/"
 	if [ -f /etc/wsl.conf ]; then
 		tmp="$(awk -F '=' '/root/ {print $2}' /etc/wsl.conf | awk '{$1=$1;print}')"
