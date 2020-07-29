@@ -42,9 +42,7 @@ if [ -n "$SYSTEMD_PID" ] && [ "$SYSTEMD_PID" != "1" ]; then
             /usr/bin/sudo -H -u "$SUDO_USER" \
             /bin/bash -c 'set -a; [ -f "$HOME/.systemd-env" ] && source "$HOME/.systemd-env"; set +a; exec bash -c '"$(printf "%q" "$@")"
     else
-        exec /usr/bin/nsenter -t "$SYSTEMD_PID" -a \
-            /bin/login -p -f "$SUDO_USER" \
-            $([ -f "$USER_HOME/.systemd-env" ] && /bin/cat "$USER_HOME/.systemd-env" | xargs printf ' %q')
+        exec /usr/bin/nsenter -t "$SYSTEMD_PID" -a /bin/login -p -f "$SUDO_USER"
     fi
     echo "Existential crisis"
     exit 1
