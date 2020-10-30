@@ -27,4 +27,11 @@ systemctl
 ```
 If you don't get an error and see a list of units, the script worked.
 
+### Uninstalling
+```sh
+$HOME/ubuntu-wsl2-systemd-script
+bash uninst_00.sh
+# Enter your [sudo] password to uninstall.
+```
+
 Have fun using systemd on your Ubuntu WSL2 image. You may use and change and distribute this script in whatever way you'd like. 
