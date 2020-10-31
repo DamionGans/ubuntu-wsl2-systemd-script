@@ -15,7 +15,7 @@ sudo apt install git
 to do so.
 ### Run the script and commands
 ```sh
-git clone https://github.com/DamionGans/ubuntu-wsl2-systemd-script.git
+git clone https://github.com/wackyblackie/ubuntu-wsl2-systemd-script.git
 cd ubuntu-wsl2-systemd-script/
 bash ubuntu-wsl2-systemd-script.sh
 # Enter your password and wait until the script has finished
@@ -28,8 +28,10 @@ systemctl
 If you don't get an error and see a list of units, the script worked.
 
 ### Uninstalling
+To uninstall open cmd.exe and type ```wsl.exe -u root```
 ```sh
-$HOME/ubuntu-wsl2-systemd-script
+git clone https://github.com/wackyblackie/ubuntu-wsl2-systemd-script.git
+cd ubuntu-wsl2-systemd-script
 bash uninst_00.sh
 # Enter your [sudo] password to uninstall.
 ```
