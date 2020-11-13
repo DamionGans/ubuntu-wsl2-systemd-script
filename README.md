@@ -3,7 +3,7 @@ Script to enable systemd support on current Ubuntu WSL2 images from the Windows 
 Tested on 18.04, 20.04 and the versionless (current) version of Ubuntu from the Windows Store.
 I am not responsible for broken installations, fights with your roommates and police ringing your door ;-).
 
-*Note: I don't have the right tools to test/change this script at the moment. I you like to be an active maintainer, testing out PR's and updating code when necesary, please mail me (see profile). 
+__**Note**: Right now I'm trying to get this script working well again. Please grant me some time and I'll do my best. You can make PR requests if you like to and I will try them out.__
 
 Instructions from [the snapcraft forum](https://forum.snapcraft.io/t/running-snaps-on-wsl2-insiders-only-for-now/13033) turned into a script. Thanks to [Daniel](https://forum.snapcraft.io/u/daniel) on the Snapcraft forum! 
 
