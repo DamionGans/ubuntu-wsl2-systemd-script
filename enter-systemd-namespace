@@ -1,8 +1,7 @@
 #!/bin/bash --norc
 
-if [ "$LOGNAME" != "root" ]; then
-    echo "You need to run $0 through sudo"
-    exit 1
+if [ "$(id -u)" != "0" ]; then
+  exec sudo "$0" "$1"
 fi
 
 if [ -x /usr/sbin/daemonize ]; then
@@ -24,7 +23,7 @@ if ! command -v /usr/bin/unshare > /dev/null; then
     exit 1
 fi
 
-SYSTEMD_EXE="/lib/systemd/systemd --system-unit=basic.target"
+SYSTEMD_EXE="/lib/systemd/systemd --unit=basic.target"
 SYSTEMD_PID="$(ps -eo pid=,args= | awk '$2" "$3=="'"$SYSTEMD_EXE"'" {print $1}')"
 if [ -z "$SYSTEMD_PID" ]; then
     "$DAEMONIZE" /usr/bin/unshare --fork --pid --mount-proc bash -c 'export container=wsl; mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc; exec '"$SYSTEMD_EXE"
