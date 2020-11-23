@@ -32,7 +32,7 @@ To uninstall open cmd.exe and type ```wsl.exe -u root```
 ```sh
 git clone https://github.com/wackyblackie/ubuntu-wsl2-systemd-script.git
 cd ubuntu-wsl2-systemd-script
-bash uninst_00.sh
+bash uninstall.sh
 # Enter your [sudo] password to uninstall.
 ```
 
