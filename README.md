@@ -1,6 +1,6 @@
 # ubuntu-wsl2-systemd-script
 Script to enable systemd support on current Ubuntu WSL2 images from the Windows store. 
-Tested on 18.04, 20.04 and the versionless (current) version of Ubuntu from the Windows Store.
+Script is unsupported and will no longer be maintained, but will be up here because it is used by quite some people.
 I am not responsible for broken installations, fights with your roommates and police ringing your door ;-).
 
 Instructions from [the snapcraft forum](https://forum.snapcraft.io/t/running-snaps-on-wsl2-insiders-only-for-now/13033) turned into a script. Thanks to [Daniel](https://forum.snapcraft.io/u/daniel) on the Snapcraft forum! 
