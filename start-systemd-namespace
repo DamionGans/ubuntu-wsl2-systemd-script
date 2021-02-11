@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SYSTEMD_EXE="/lib/systemd/systemd --unit=basic.target"
+SYSTEMD_EXE="/lib/systemd/systemd --unit=multi-user.target"
 SYSTEMD_PID="$(ps -eo pid=,args= | awk '$2" "$3=="'"$SYSTEMD_EXE"'" {print $1}')"
 if [ "$LOGNAME" != "root" ] && ( [ -z "$SYSTEMD_PID" ] || [ "$SYSTEMD_PID" != "1" ] ); then
     export | sed -e 's/^declare -x //;/^IFS=".*[^"]$/{N;s/\n//}' | \
