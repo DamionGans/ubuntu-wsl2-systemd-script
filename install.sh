@@ -13,7 +13,7 @@ if [ "$1" != "--force" ]; then
     fi
 fi
 
-self_dir="$(dirname $0)"
+self_dir="$(pwd)"
 
 function interop_prefix {
 	win_location="/mnt/"
