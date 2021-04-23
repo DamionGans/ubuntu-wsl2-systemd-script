@@ -29,7 +29,7 @@ SYSTEMD_PID="$(ps -eo pid=,args= | awk '$2" "$3=="'"$SYSTEMD_EXE"'" {print $1}')
 if [ -z "$SYSTEMD_PID" ]; then
     "$DAEMONIZE" /usr/bin/unshare --fork --pid --mount-proc bash -c 'export container=wsl; mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc; exec '"$SYSTEMD_EXE"
     while [ -z "$SYSTEMD_PID" ]; do
-        echo "Sleeping for 1 second to let systemd settle"
+        #echo "Sleeping for 1 second to let systemd settle"
         sleep 1
         SYSTEMD_PID="$(ps -eo pid=,args= | awk '$2" "$3=="'"$SYSTEMD_EXE"'" {print $1}')"
     done
