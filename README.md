@@ -11,18 +11,27 @@ You need ```git``` to be installed for the commands below to work. Use
 sudo apt install git
 ```
 to do so.
+
 ### Run the script and commands
 ```sh
-git clone https://github.com/DamionGans/ubuntu-wsl2-systemd-script.git
-cd ubuntu-wsl2-systemd-script/
-bash ubuntu-wsl2-systemd-script.sh
-# Enter your password and wait until the script has finished
+git clone https://github.com/DamionGans/ubuntu-wsl2-systemd-script.git ~/ubuntu-wsl2-systemd-script
+cd ~/ubuntu-wsl2-systemd-script
+bash install.sh
+# Enter your password and wait until the script has finished.
 ```
-### Then restart the Ubuntu shell and try running systemctl
+
+### Restart the Ubuntu shell and try running systemctl
 ```sh
 systemctl
-
 ```
-If you don't get an error and see a list of units, the script worked.
+If you don't get an error and see a list of units, the script worked fine.
 
-Have fun using systemd on your Ubuntu WSL2 image. You may use and change and distribute this script in whatever way you'd like. 
+### Uninstalling
+```sh
+cd ~/ubuntu-wsl2-systemd-script
+bash uninstall.sh
+# Enter your password and wait until the script has finished.
+```
+
+Have fun using systemd on your Ubuntu WSL2 image. 
+You may use and change and distribute this script in whatever way you'd like. 
