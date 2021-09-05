@@ -78,7 +78,9 @@ sudo rm -f /lib/systemd/system/sysinit.target.wants/proc-sys-fs-binfmt_misc.moun
 sudo rm -f /lib/systemd/system/sysinit.target.wants/systemd-binfmt.service
 sudo rm -f /etc/systemd/system/multi-user.target.wants/systemd-resolved.service
 sudo rm -f /etc/systemd/system/dbus-org.freedesktop.resolve1.service
-
+sudo rm -f /lib/systemd/system/systemd-networkd-wait-online.service
+sudo rm -f /lib/systemd/system/systemd-networkd.service
+sudo rm -f /lib/systemd/system/systemd-networkd.socket
 
 if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ] && [ "$(head -n1  /proc/sys/fs/binfmt_misc/WSLInterop)" == "enabled" ]; then
   "$(interop_prefix)$(sysdrive_prefix)"/Windows/System32/cmd.exe /C setx WSLENV BASH_ENV/u

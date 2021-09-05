@@ -4,10 +4,7 @@ SYSTEMD_EXE="/lib/systemd/systemd --unit=multi-user.target"
 SYSTEMD_PID="$(ps -eo pid=,args= | awk '$2" "$3=="'"$SYSTEMD_EXE"'" {print $1}')"
 if [ "$LOGNAME" != "root" ] && ( [ -z "$SYSTEMD_PID" ] || [ "$SYSTEMD_PID" != "1" ] ); then
     export | sed -e 's/^declare -x //;/^IFS=".*[^"]$/{N;s/\n//}' | \
-        grep -E -v "^(BASH|BASH_ENV|DIRSTACK|EUID|GROUPS|HOME|HOSTNAME|\
-IFS|LANG|LOGNAME|MACHTYPE|MAIL|NAME|OLDPWD|OPTERR|\
-OSTYPE|PATH|PIPESTATUS|POSIXLY_CORRECT|PPID|PS1|PS4|\
-SHELL|SHELLOPTS|SHLVL|SYSTEMD_PID|UID|USER|_)(=|\$)" > "$HOME/.systemd-env"
+        grep -E "^(WT_|WSL_|WSLENV|WSLPATH)" > "$HOME/.systemd-env"
     export SYSTEMD_PRE_NAMESPACE_PATH="$PATH"
     export SYSTEMD_PRE_NAMESPACE_PWD="$PWD"
     exec sudo /usr/sbin/enter-systemd-namespace "$BASH_EXECUTION_STRING"
