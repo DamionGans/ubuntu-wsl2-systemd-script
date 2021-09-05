@@ -45,4 +45,4 @@ bash uninstall.sh
 ```
 
 Have fun using systemd on your Ubuntu WSL2 image. 
-You may use and change and distribute this script by following LICENSE.md.
+You may use, change and distribute these scripts by following LICENSE.md.
