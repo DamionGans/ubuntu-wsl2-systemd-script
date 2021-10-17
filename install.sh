@@ -1,6 +1,24 @@
 #!/bin/bash
 
-if [ "$1" != "--force" ]; then
+force_install=false
+use_wslg_socket=true
+
+while true; do
+  case $1 in
+    --force)
+      force_install=true
+      shift
+      ;;
+    --no-wslg)
+      use_wslg_socket=false
+      shift
+      ;;
+    *) break
+      ;;
+  esac
+done
+
+if [ "${force_install}" == "false" ]; then
     if [ -f /usr/sbin/start-systemd-namespace ]; then
         echo "It appears you have already installed the systemd hack."
         echo "To forcibly reinstall, run this script with the \`--force\` parameter."
@@ -51,7 +69,16 @@ function sysdrive_prefix {
 }
 
 sudo hwclock -s
-sudo apt-get update && sudo apt-get install -yqq daemonize dbus-user-session fontconfig
+install_packages=""
+for package in daemonize dbus-user-session fontconfig; do
+  if [ $(dpkg -l ${package} &> /dev/null; echo $?) -ne 0 ]; then
+    install_packages+="${package} "
+  fi
+done
+
+if [ ${#install_packages} -gt 0 ]; then
+  sudo apt-get update && sudo apt-get install -yqq ${install_packages}
+fi
 
 sudo cp "$self_dir/start-systemd-namespace" /usr/sbin/start-systemd-namespace
 sudo cp "$self_dir/enter-systemd-namespace" /usr/sbin/enter-systemd-namespace
@@ -61,14 +88,25 @@ sudo tee /etc/sudoers.d/systemd-namespace >/dev/null <<EOF
 Defaults        env_keep += WSLPATH
 Defaults        env_keep += WSLENV
 Defaults        env_keep += WSL_INTEROP
+Defaults        env_keep += WT_PROFILE_ID
+Defaults        env_keep += WT_SESSION
 Defaults        env_keep += WSL_DISTRO_NAME
 Defaults        env_keep += PRE_NAMESPACE_PATH
 Defaults        env_keep += PRE_NAMESPACE_PWD
+Defaults        env_keep += HOSTTYPE
+Defaults        env_keep += NAME
+Defaults        env_keep += USE_WSLG_SOCKET
+$( [ "${use_wslg_socket}" == "true" ] && echo "Defaults        env_keep += PULSE_SERVER")
+$( [ "${use_wslg_socket}" == "true" ] && echo "Defaults        env_keep += WAYLAND_DISPLAY")
+$( [ "${use_wslg_socket}" == "true" ] && echo "Defaults        env_keep += DISPLAY")
+
 %sudo ALL=(ALL) NOPASSWD: /usr/sbin/enter-systemd-namespace
 EOF
 
 if ! grep 'start-systemd-namespace' /etc/bash.bashrc >/dev/null; then
-  sudo sed -i 2a"# Start or enter a PID namespace in WSL2\nsource /usr/sbin/start-systemd-namespace\n" /etc/bash.bashrc
+  sudo sed -i 2a"# Start or enter a PID namespace in WSL2\nexport USE_WSLG_SOCKET=${use_wslg_socket}\nsource /usr/sbin/start-systemd-namespace\n" /etc/bash.bashrc
+else
+  sudo sed -i "s/export USE_WSLG_SOCKET=.*/export USE_WSLG_SOCKET=${use_wslg_socket}/" /etc/bash.bashrc
 fi
 
 sudo rm -f /etc/systemd/user/sockets.target.wants/dirmngr.socket
