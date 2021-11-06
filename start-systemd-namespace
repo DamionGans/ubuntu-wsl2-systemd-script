@@ -1,8 +1,7 @@
 #!/bin/sh
-
 SYSTEMD_EXE="/lib/systemd/systemd --unit=multi-user.target"
 SYSTEMD_PID="$(ps -eo pid=,args= | awk '$2" "$3=="'"$SYSTEMD_EXE"'" {print $1}')"
-if [ "$LOGNAME" != "root" ] && ( [ -z "$SYSTEMD_PID" ] || [ "$SYSTEMD_PID" != "1" ] ); then
+if ( [ -z "$SYSTEMD_PID" ] || [ "$SYSTEMD_PID" != "1" ] ); then
     if [ "${USE_WSLG_SOCKET}" != "false" ]; then
       export | sed -e 's/^declare -x //;/^IFS=".*[^"]$/{N;s/\n//}' | \
         grep -E "^(WT_|WSL_|WSLENV|WSLPATH|HOSTTYPE|NAME|USE_WSLG_SOCKET|DISPLAY|PULSE_SERVER|WAYLAND_DISPLAY|XDG_RUNTIME_DIR|PATH)" > "$HOME/.systemd-env"
