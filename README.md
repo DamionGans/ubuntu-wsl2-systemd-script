@@ -25,7 +25,7 @@ sudo apt install git
 ```sh
 git clone https://github.com/FiestaLake/ubuntu-wsl2-systemd-script.git ~/ubuntu-wsl2-systemd-script
 cd ~/ubuntu-wsl2-systemd-script
-bash install.sh
+bash install.sh (--force) (--no-wslg)
 
 # Enter your password and wait until the script has finished.
 ```
