@@ -1,9 +1,7 @@
 # ubuntu-wsl2-systemd-script
 Script to enable systemd support on current Ubuntu WSL2 images from the Windows store. 
-Tested on 18.04, 20.04 and the versionless (current) version of Ubuntu from the Windows Store.
+Tested on 18.04, 20.04, 20.10 versions of Ubuntu from the Windows Store.
 I am not responsible for broken installations, fights with your roommates and police ringing your door ;-).
-
-*Note: I don't have the right tools to test/change this script at the moment. I you like to be an active maintainer, testing out PR's and updating code when necesary, please mail me (see profile). 
 
 Instructions from [the snapcraft forum](https://forum.snapcraft.io/t/running-snaps-on-wsl2-insiders-only-for-now/13033) turned into a script. Thanks to [Daniel](https://forum.snapcraft.io/u/daniel) on the Snapcraft forum! 
 
@@ -27,8 +25,13 @@ systemctl
 ```
 If you don't get an error and see a list of units, the script worked.
 
+### Disabling from a broken shell
+To disable this script (in any case), just press <kbd>Win</kbd> + <kbd>R</kbd> and type `wsl.exe -u root` and press <kbd>Enter</kbd>.
+Then, continue the steps in the [Uninstalling section](#Uninstalling)
+
+
 ### Uninstalling
-To uninstall open cmd.exe and type ```wsl.exe -u root```
+To uninstall open your distro and type:
 ```sh
 git clone https://github.com/wackyblackie/ubuntu-wsl2-systemd-script.git
 cd ubuntu-wsl2-systemd-script
@@ -36,4 +39,4 @@ bash uninstall.sh
 # Enter your [sudo] password to uninstall.
 ```
 
-Have fun using systemd on your Ubuntu WSL2 image. You may use and change and distribute this script in whatever way you'd like. 
+Have fun using systemd on your Ubuntu WSL2 image.
