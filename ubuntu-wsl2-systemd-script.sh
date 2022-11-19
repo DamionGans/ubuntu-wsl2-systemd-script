@@ -76,6 +76,9 @@ sudo rm -f /etc/systemd/user/sockets.target.wants/gpg-agent*.socket
 sudo rm -f /lib/systemd/system/sysinit.target.wants/proc-sys-fs-binfmt_misc.automount
 sudo rm -f /lib/systemd/system/sysinit.target.wants/proc-sys-fs-binfmt_misc.mount
 sudo rm -f /lib/systemd/system/sysinit.target.wants/systemd-binfmt.service
+sudo rm -f /etc/systemd/system/multi-user.target.wants/systemd-resolved.service
+sudo rm -f /etc/systemd/system/dbus-org.freedesktop.resolve1.service
+
 
 if [ -f /proc/sys/fs/binfmt_misc/WSLInterop ] && [ "$(head -n1  /proc/sys/fs/binfmt_misc/WSLInterop)" == "enabled" ]; then
   "$(interop_prefix)$(sysdrive_prefix)"/Windows/System32/cmd.exe /C setx WSLENV BASH_ENV/u
