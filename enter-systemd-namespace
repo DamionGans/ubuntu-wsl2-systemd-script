@@ -45,11 +45,11 @@ USER_USERNAME=${SUDO_USER:-$LOGNAME}
 USER_HOME="$(getent passwd | awk -F: '$1=="'"$USER_USERNAME"'" {print $6}')"
 if [ -n "$SYSTEMD_PID" ] && [ "$SYSTEMD_PID" != "1" ]; then
     if [ -n "$1" ] && [ "$1" != "bash --login" ] && [ "$1" != "/bin/bash --login" ]; then
-        exec /usr/bin/nsenter -t "$SYSTEMD_PID" -a \
+        exec /usr/bin/nsenter -t "$SYSTEMD_PID" -m -p \
             /usr/bin/sudo -H -u "$USER_USERNAME" \
             /bin/bash --norc -c "set -a; [ -f \"\$HOME/.systemd-env\" ] && source \"\$HOME/.systemd-env\"; set +a; $@"
     else
-        exec /usr/bin/nsenter -t "$SYSTEMD_PID" -a \
+        exec /usr/bin/nsenter -t "$SYSTEMD_PID" -m -p \
             /bin/login -p -f "$USER_USERNAME"
     fi
     echo "Existential crisis"
