@@ -1,3 +1,7 @@
+## [WSL2 now supports systemd natively (without this script!)](https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/)
+
+Consider using the native one unless you have very specific reasons to do so.
+
 # ubuntu-wsl2-systemd-script
 
 These are scripts to add proper **systemd support** on **Ubuntu images of WSL2**.
