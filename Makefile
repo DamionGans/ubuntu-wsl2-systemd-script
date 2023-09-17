@@ -5,13 +5,13 @@ all:
  
 install:
   @echo Online install for Ubuntu WSL2 systemd Hack
-  curl https://raw.githubusercontent.com/wackyblackie/ubuntu-wsl2-systemd-script/master/ubuntu-wsl2-systemd-script.sh | bash
+  curl https://raw.githubusercontent.com/alanmburr/ubuntu-wsl2-systemd-script/master/ubuntu-wsl2-systemd-script.sh | bash
   @echo Run \'sudo make disable\' to disable systemd hack
   @echo Run \'sudo make uninstall\' to uninstall systemd hack
  
  uninstall:
   @echo Online uninstall for Ubuntu WSL2 systemd Hack
-  curl https://raw.githubusercontent.com/wackyblackie/ubuntu-wsl2-systemd-script/master/uninstall.sh | bash
+  curl https://raw.githubusercontent.com/alanmburr/ubuntu-wsl2-systemd-script/master/uninstall.sh | bash
  
  disable:
   @echo Offline systemd Hack disable

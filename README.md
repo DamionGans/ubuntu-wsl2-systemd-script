@@ -38,5 +38,6 @@ cd ubuntu-wsl2-systemd-script
 bash uninstall.sh
 # Enter your [sudo] password to uninstall.
 ```
+Hopefully it works. If it don't, leave an issue :)
 
 Have fun using systemd on your Ubuntu WSL2 image.
