@@ -13,7 +13,7 @@ sudo apt install git
 to do so.
 ### Run the script and commands
 ```sh
-git clone https://github.com/wackyblackie/ubuntu-wsl2-systemd-script.git
+git clone https://github.com/alanmburr/ubuntu-wsl2-systemd-script.git
 cd ubuntu-wsl2-systemd-script/
 bash ubuntu-wsl2-systemd-script.sh
 # Enter your password and wait until the script has finished
@@ -33,7 +33,7 @@ Then, continue the steps in the [Uninstalling section](#Uninstalling)
 ### Uninstalling
 To uninstall open your distro and type:
 ```sh
-git clone https://github.com/wackyblackie/ubuntu-wsl2-systemd-script.git
+git clone https://github.com/alanmburr/ubuntu-wsl2-systemd-script.git
 cd ubuntu-wsl2-systemd-script
 bash uninstall.sh
 # Enter your [sudo] password to uninstall.
